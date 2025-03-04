@@ -1,0 +1,28 @@
+{{define "card_deck"}}
+<div class="card-deck">
+  <div class="cards-container">
+    <template
+      x-for="card in ['0', '1', '2', '3', '5', '8', '13', '20', '40', '100', '?']"
+    >
+      <div
+        class="poker-card"
+        :class="{
+                    'selected': selectedCard === card,
+                    'disabled': state === 'revealed',
+                    'flipped': state === 'revealed' && selectedCard === card
+                }"
+        @click="state === 'voting' && selectCard(card)"
+      >
+        <div class="card-inner">
+          <div class="card-front">
+            <span x-text="card"></span>
+          </div>
+          <div class="card-back">
+            <div class="card-pattern"></div>
+          </div>
+        </div>
+      </div>
+    </template>
+  </div>
+</div>
+{{end}}

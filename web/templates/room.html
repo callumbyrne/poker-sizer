@@ -1,0 +1,78 @@
+{{define "content"}}
+<div
+  x-data="planningPoker()"
+  data-room-id="{{.ID}}"
+  data-is-admin="{{.CurrentUserIsAdmin}}"
+  data-users="{{.UsersJSON}}"
+  data-issue="{{.ActiveIssue}}"
+  hx-ext="ws"
+  ws-connect="/ws/rooms/{{.ID}}?user_id={{.CurrentUserID}}"
+  class="poker-room"
+>
+  >
+  <div class="room-header">
+    <h2>Room: {{.Name}}</h2>
+    <div class="room-id">Room ID: <span>{{.ID}}</span></div>
+  </div>
+
+  <div class="main-content">
+    <div class="left-panel">
+      {{template "user_list" .}}
+
+      <div class="issue-section" x-show="isAdmin">
+        <h3>Current Issue</h3>
+        <div class="form-group">
+          <input
+            type="text"
+            x-model="currentIssue"
+            @keyup.enter="updateIssue()"
+            placeholder="What are we estimating?"
+          />
+          <button @click="updateIssue()">Update</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="right-panel">
+      <div class="issue-display">
+        <h3>Current Issue</h3>
+        <p x-text="currentIssue || 'No issue set'"></p>
+      </div>
+
+      {{template "card_deck" .}}
+
+      <div class="action-buttons">
+        <button
+          x-show="isAdmin && state === 'voting'"
+          @click="revealVotes()"
+          class="reveal-btn"
+        >
+          Reveal Cards
+        </button>
+        <button
+          x-show="isAdmin && state === 'revealed'"
+          @click="resetVoting()"
+          class="reset-btn"
+        >
+          New Vote
+        </button>
+      </div>
+
+      <div class="results-section" x-show="state === 'revealed'">
+        <h3>Results</h3>
+        <div class="results-summary">
+          <template x-for="result in results">
+            <div class="result-item">
+              <span x-text="result.value"></span>:
+              <span x-text="result.count"></span> vote(s)
+            </div>
+          </template>
+        </div>
+        <div class="average" x-show="average">
+          <strong>Average:</strong> <span x-text="average.toFixed(1)"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{{end}}

@@ -1,0 +1,24 @@
+{{define "user_list"}}
+<div class="users-section">
+  <h3>Participants</h3>
+  <ul class="user-list">
+    <template x-for="user in users" :key="user.id">
+      <li class="user-item">
+        <span x-text="user.name"></span>
+        <span x-show="user.isAdmin" class="admin-badge">Admin</span>
+        <span
+          x-show="votes[user.id]"
+          class="voted-indicator"
+          :class="{'revealed': state === 'revealed'}"
+        >
+          <span x-show="state === 'voting'">✓</span>
+          <span
+            x-show="state === 'revealed'"
+            x-text="votes[user.id].value"
+          ></span>
+        </span>
+      </li>
+    </template>
+  </ul>
+</div>
+{{end}}
