@@ -23,3 +23,11 @@ go.work.sum
 
 # env file
 .env
+
+bin
+tmp
+tailwindcss
+
+web/templates/*/*.go
+web/templates/*/*.txt
+web/static/css/style.css

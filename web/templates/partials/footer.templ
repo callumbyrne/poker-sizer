@@ -1,0 +1,7 @@
+package partials
+
+templ Footer() {
+	<footer x-data="{ year: new Date().getFullYear()}">
+		<p>© <span x-text="year"></span> PokerSizer</p>
+	</footer>
+}

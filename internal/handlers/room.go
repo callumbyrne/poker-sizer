@@ -2,12 +2,12 @@ package handlers
 
 import (
 	"encoding/json"
-	"fmt"
 	"html/template"
 	"net/http"
 	"strings"
 
 	"github.com/callumbyrne/poker-sizer/internal/services"
+	"github.com/callumbyrne/poker-sizer/web/templates/pages"
 )
 
 type RoomHandler struct {
@@ -26,14 +26,12 @@ func NewRoomHandler(roomService *services.RoomService) *RoomHandler {
 }
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "<html><body><h1>Planning Poker</h1><p>If you can see this, basic routing works!</p></body></html>")
-	// if r.URL.Path != "/" {
-	// 	http.NotFound(w, r)
-	// 	return
-	// }
-	//
-	// templates := template.Must(template.ParseGlob("web/templates/*.html"))
-	// templates.ExecuteTemplate(w, "home.html", nil)
+	if r.URL.Path != "/" {
+		http.NotFound(w, r)
+		return
+	}
+
+	pages.Home().Render(r.Context(), w)
 }
 
 func (h *RoomHandler) CreateRoom(w http.ResponseWriter, r *http.Request) {
